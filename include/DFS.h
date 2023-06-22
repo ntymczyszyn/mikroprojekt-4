@@ -1,15 +1,13 @@
 #ifndef DFS_H
 #define DFS_H
-#include "graf_lista.h"
-#include "plansza.h"
-class dfs
-{
-private:
+#include "Graph.h"
+#include "Board.h"
 
-public:
-    dfs();
-    virtual ~dfs();
-    static void doDFS(const plansza &plansz, int start, int cel);
+struct dfs
+{
+    static void doDFS(const Board &board, int start, int cel);
+    static void foundPath(const Board &board,std::vector<int>& visited);
+    static void pathOrder(const Board &board,std::vector<int>& visited);
 };
 
 #endif // DFS_H

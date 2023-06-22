@@ -1,59 +1,39 @@
-#include "../include/aGwiazdka.h"
+#include "../include/AStar.h"
+#include <vector>
+#include <algorithm>
 
-aGwiazdka::aGwiazdka()
+void AStar::removeFromSet(std::vector <int> &zbior, int a)
 {
+    auto it = std::find(zbior.begin(), zbior.end(), a);
 
-}
-
-aGwiazdka::~aGwiazdka()
-{
-    //dtor
-}
-
-void aGwiazdka::usunZeZbioru(std::vector <int> &zbior, int a)
-{
-    std::vector<int>::iterator it;
-
-    for(it=zbior.begin();it!=zbior.end();++it)
-    {
-        if(*it==a)
-        {
-            zbior.erase(it);
-            break;
-        }
+    if (it != zbior.end()) {
+        zbior.erase(it);
     }
 }
 
 
-bool aGwiazdka::wZbiorze(std::vector <int> zbior, int a)
+bool AStar::isInSet(std::vector <int> &zbior, int a)
 {
-    for(int i=0;i<zbior.size();i++)
-    {
-        if(zbior[i]==a)
-        {
-            return true;
-        }
+    auto it = std::find(zbior.begin(), zbior.end(), a);
 
+    if (it != zbior.end()) {
+        return true;
     }
     return false;
 }
 
-int aGwiazdka::heur(int a, int b)
+int AStar::heuristic(int a, int b)
 {
-    int h;
-
-    h=abs(a/5-b/5)+abs(a%5-b%5);
-    return h;
-
+    return abs(a/5 - b/5) + abs(a%5 - b%5);
 }
 
 
-std::vector <int> aGwiazdka::doAGwiazdka(const plansza &plansz, int start, int cel)
+std::vector <int> AStar::doAStar(const Board &plansz, int start, int cel)
 {
-    int g_score[plansz.grafik.ilosc_wierzcholkow()];
-    int h_score[plansz.grafik.ilosc_wierzcholkow()];
-    int f_score[plansz.grafik.ilosc_wierzcholkow()];
-    int came_from[plansz.grafik.ilosc_wierzcholkow()];
+    int g_score[plansz.graph.numberOfNodes()];
+    int h_score[plansz.graph.numberOfNodes()];
+    int f_score[plansz.graph.numberOfNodes()];
+    int came_from[plansz.graph.numberOfNodes()];
 
     //dobra, teraz musimy utworzyc stos Frontier
     std::vector <int> odwiedzone;
@@ -62,9 +42,9 @@ std::vector <int> aGwiazdka::doAGwiazdka(const plansza &plansz, int start, int c
     int x;
     int niepewny_g_score;
     bool niepewny_lepszy;
-    for(int i=0;i<plansz.grafik.ilosc_wierzcholkow();i++)  //wypelniamy tablice h
+    for(int i=0;i< plansz.graph.numberOfNodes(); i++)  //wypelniamy tablice h
     {
-        h_score[i]=heur(cel, i);
+        h_score[i]= heuristic(cel, i);
         came_from[i]=-1;
     }
 
@@ -93,7 +73,7 @@ std::vector <int> aGwiazdka::doAGwiazdka(const plansza &plansz, int start, int c
             std::cout<<"A*: Odwiedzone wierzcholki"<<std::endl;
             for(int i=0;i<odwiedzone.size();i++)
             {
-                std::cout<<plansz.tab[odwiedzone[i]]<<" "<< i+1<< ", f="<<f_score[odwiedzone[i]]<<", h="<<h_score[odwiedzone[i]]<< ", g="<<g_score[odwiedzone[i]]<<std::endl;
+                std::cout << plansz.alias[odwiedzone[i]] << " " << i + 1 << ", f=" << f_score[odwiedzone[i]] << ", h=" << h_score[odwiedzone[i]] << ", g=" << g_score[odwiedzone[i]] << std::endl;
 
             }
 
@@ -103,17 +83,17 @@ std::vector <int> aGwiazdka::doAGwiazdka(const plansza &plansz, int start, int c
 
         std::vector<int>::iterator it;
 
-        usunZeZbioru(doRozpatrzenia, x);
+        removeFromSet(doRozpatrzenia, x);
         odwiedzone.push_back(x);
 
-        for(int i=plansz.grafik.ilosc_wierzcholkow()-1;i>=0;--i) //przeszukujemy nasz graf w poszukiwaniu sasiadow
+        for(int i= plansz.graph.numberOfNodes() - 1; i >= 0; --i) //przeszukujemy nasz graf w poszukiwaniu sasiadow
         {
-            if(plansz.grafik.czy_krawedz(x, i)&&!wZbiorze(odwiedzone, i))  //jesli to sasiad i jeszcze nie jest w zamknietym
+            if(plansz.graph.isEdge(x, i) && !isInSet(odwiedzone, i))  //jesli to sasiad i jeszcze nie jest w zamknietym
             {
                 niepewny_g_score=g_score[x]+1;
                 niepewny_lepszy=false;
 
-                if(!wZbiorze(doRozpatrzenia, i))
+                if(!isInSet(doRozpatrzenia, i))
                 {
                     doRozpatrzenia.push_back(i);
                     niepewny_lepszy=true;
@@ -135,7 +115,7 @@ std::vector <int> aGwiazdka::doAGwiazdka(const plansza &plansz, int start, int c
 
 
 
-std::vector <int> aGwiazdka::odtworz_sciezke(int *cameFrom, int current)
+std::vector <int> AStar::odtworz_sciezke(int *cameFrom, int current)
 {
     std::vector <int> total_path;
     total_path.push_back(current);

@@ -1,65 +1,58 @@
-#include "../include/dfs.h"
+#include "../include/DFS.h"
 
-dfs::dfs()
+void dfs::doDFS(const Board& board, int start, int cel)
 {
-    //ctor
-}
+    std::vector <int> visited;
+    std::stack <int> toVisit;
 
-dfs::~dfs()
-{
-    //dtor
-}
+    const int size = board.graph.numberOfNodes();
+    std::vector<bool> _visited(size, false);
 
-void dfs::doDFS(const plansza &plansz, int start, int cel)
-{
-    //dobra, teraz musimy utworzyc stos Frontier
-    std::vector <int> odwiedzone;
-    std::stack <int> doRozpatrzenia;
+    toVisit.push(start);
 
-    bool _odwiedzone[plansz.grafik.ilosc_wierzcholkow()]; //opowiedniej wielkosci tablica
-
-    for(int i=0;i<plansz.grafik.ilosc_wierzcholkow();i++)
-        _odwiedzone[i] = false;
-
-    doRozpatrzenia.push(start); //dodajemy pierwszy element do stosu
-    while(!doRozpatrzenia.empty()) //dopoki stos nie bedzie pusty
+    while(not toVisit.empty())
     {
-        start=doRozpatrzenia.top();
-        doRozpatrzenia.pop();
-        if(_odwiedzone[start] ==false)
+        int current = toVisit.top();
+        toVisit.pop();
+        if(not _visited[current])
         {
-            odwiedzone.push_back(start);  //dodajemy jako element juz odwiedzony
-            _odwiedzone[start]=true;
+            visited.push_back(current);
+            _visited[current] = true;
 
-            if(start==plansz.getKrol())
+            if(current == board.getKing())
+                foundPath(board, visited);
+
+            for(int i = board.graph.numberOfNodes() - 1; i >= 0; --i) //przeszukujemy nasz graf
             {
-                std::cout<<"DFS: ZNALEZIONO SCIEZKE"<<std::endl;
-                for(int i=0; i<odwiedzone.size();i++)
+                if(board.graph.isEdge(current, i) and not _visited[i])
                 {
-                    std::cout<<plansz.tab[odwiedzone[i]];
-                    if(i<odwiedzone.size()-1)
-                        std::cout<<", ";
-                }
-
-                std::cout<<std::endl<<std::endl;
-            }
-
-            for(int i=plansz.grafik.ilosc_wierzcholkow()-1;i>=0;--i) //przeszukujemy nasz graf
-            {
-                if(plansz.grafik.czy_krawedz(start, i) && _odwiedzone[i] == false)
-                {
-                    doRozpatrzenia.push(i);//Wrzucamy na stos jego sasiadów
+                    toVisit.push(i);//Wrzucamy na stos jego sasiadów
                 }
             }
 
         }
     }
+    pathOrder(board, visited);
+}
 
-    std::cout<<"DFS: Kolejnosc odwiedzania wierzcholkow"<<std::endl;
-    for(int i=0; i<odwiedzone.size();i++)
+void dfs::foundPath(const Board &board, std::vector<int> &visited) {
+    std::cout<<"DFS: ZNALEZIONO SCIEZKE"<<std::endl;
+    for(int i=0; i < visited.size(); i++)
     {
-        std::cout<<plansz.tab[odwiedzone[i]];
-        if(i<odwiedzone.size()-1)
+        std::cout << board.alias[visited[i]];
+        if(i < visited.size() - 1)
+            std::cout<<", ";
+    }
+
+    std::cout<<std::endl<<std::endl;
+}
+
+void dfs::pathOrder(const Board &board, std::vector<int> &visited) {
+    std::cout<<"DFS: Kolejnosc odwiedzania wierzcholkow"<<std::endl;
+    for(int i=0; i < visited.size(); i++)
+    {
+        std::cout << board.alias[visited[i]];
+        if(i < visited.size() - 1)
             std::cout<<", ";
     }
     std::cout<<std::endl;
