@@ -1,0 +1,84 @@
+DODATEK OD CHATU CO JAKOŚ DZIWNIE DZIAŁA
+//        int current = *std::min_element(toVisit.begin(), toVisit.end(),
+//                                        [&](int a, int b) { return fScore[a] < fScore[b]; });
+//
+//
+
+//std::vector <int> AStar::doAStar(const Board& board)
+//{
+//    int start = board.getKnight();
+//    const int size = board.graph.numberOfNodes();
+//    std::vector <int> gScore(size);
+//    std::vector <int> hScore(size);
+//    std::vector <int> fScore(size);
+//    std::vector <int> cameFrom(size);
+//    std::vector <int> visited;
+//    std::vector <int> toVisit;
+//
+//    int current;
+//    int tempGScore;
+//    bool tempBetterScore;
+//
+//    for(int i{0}; i < size; ++i)
+//    {
+//        hScore[i]= heuristic(board.getKing(), i);
+//        cameFrom[i] = -1;
+//    }
+//
+//    toVisit.push_back(start);
+//    gScore[start] = 0;
+//    fScore[start] = gScore[start] + hScore[start];
+//
+//    while(not toVisit.empty())
+//    {
+//        int temp = std::numeric_limits<int>::max();
+//        for(int i{0}; i < toVisit.size(); i++)  //szukamy minimalnej oceny f wsrod naszych nod
+//        {
+//            temp = std::min(temp, fScore[toVisit[i]]);
+//            if(temp == fScore[toVisit[i]])
+//                current = toVisit[i];
+//        }
+//        // result here
+//        if(current == board.getKing())
+//        {
+//            visited.push_back(current);
+//            fScore[current] = gScore[current] + hScore[current];
+//            std::cout<<"A* - Odwiedzone wierzcholki"<<std::endl;
+//            for(int i{0}; i < visited.size(); ++i)
+//            {
+//                std::cout << board.alias[visited[i]] << " " << i + 1 << ", f = " << fScore[visited[i]] << ", h = " << hScore[visited[i]] << ", g = " << gScore[visited[i]] << std::endl;
+//            }
+//            return recreatePath(cameFrom, board.getKing());
+//        }
+//
+//        removeFromSet(toVisit, current);
+//        visited.push_back(current);
+//
+//        for(int i{board.graph.numberOfNodes() - 1}; i >= 0; --i) //przeszukujemy nasz graf w poszukiwaniu sasiadow
+//        {
+//            if(board.graph.isEdge(current, i) and not isInSet(visited, i))  //jesli to sasiad i jeszcze nie jest w zamknietym
+//            {
+//                tempGScore = gScore[current] + 1;
+//                tempBetterScore = false;
+//
+//                if(not isInSet(toVisit, i))
+//                {
+//                    toVisit.push_back(i);
+//                    tempBetterScore = true;
+//                }
+//                else if (tempGScore < gScore[i])
+//                {
+//                    tempBetterScore = true;
+//                }
+//                if(tempBetterScore)
+//                {
+//                    cameFrom[i] = current;
+//                    gScore[i] = tempGScore;
+//                    fScore[i] = gScore[i] + hScore[i];
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//

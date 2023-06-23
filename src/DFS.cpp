@@ -1,7 +1,10 @@
 #include "../include/DFS.h"
+#include <iostream>
+#include <stack>
 
-void dfs::doDFS(const Board& board, int start, int cel)
+void dfs::doDFS(const Board& board)
 {
+    int start = board.getKnight();
     std::vector <int> visited;
     std::stack <int> toVisit;
 
@@ -22,39 +25,29 @@ void dfs::doDFS(const Board& board, int start, int cel)
             if(current == board.getKing())
                 foundPath(board, visited);
 
-            for(int i = board.graph.numberOfNodes() - 1; i >= 0; --i) //przeszukujemy nasz graf
+            for(int i = board.graph.numberOfNodes() - 1; i >= 0; --i)
+            //for(int i{0}; i < board.graph.numberOfNodes(); ++i)
             {
                 if(board.graph.isEdge(current, i) and not _visited[i])
-                {
-                    toVisit.push(i);//Wrzucamy na stos jego sasiadów
-                }
+                    toVisit.push(i);
             }
-
         }
     }
     pathOrder(board, visited);
 }
 
 void dfs::foundPath(const Board &board, std::vector<int> &visited) {
-    std::cout<<"DFS: ZNALEZIONO SCIEZKE"<<std::endl;
-    for(int i=0; i < visited.size(); i++)
-    {
-        std::cout << board.alias[visited[i]];
-        if(i < visited.size() - 1)
-            std::cout<<", ";
-    }
+    std::cout << "DFS - path found" << std::endl;
+    for(const auto& node : visited)
+        std::cout << board.alias[node] << " ";
 
-    std::cout<<std::endl<<std::endl;
+    std::cout << std::endl << std::endl;
 }
 
 void dfs::pathOrder(const Board &board, std::vector<int> &visited) {
-    std::cout<<"DFS: Kolejnosc odwiedzania wierzcholkow"<<std::endl;
-    for(int i=0; i < visited.size(); i++)
-    {
-        std::cout << board.alias[visited[i]];
-        if(i < visited.size() - 1)
-            std::cout<<", ";
-    }
-    std::cout<<std::endl;
+    std::cout << "DFS - visited nodes" << std::endl;
+    for(const auto& node : visited)
+        std::cout << board.alias[node] << " ";
 
+    std::cout << std::endl <<std::endl;
 }

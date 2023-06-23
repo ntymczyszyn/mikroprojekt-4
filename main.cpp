@@ -1,25 +1,11 @@
-#include <iostream>
-#include "include/Graph.h"
-#include "include/Board.h"
 #include "include/DFS.h"
 #include "include/AStar.h"
 
 int main()
 {
-    Board _plansza;
-    std::vector <int> temp;
-    std::vector<int>::iterator it;
-
-    dfs::doDFS(_plansza, 22, 7);
-
-//    temp = AStar::doAStar(_plansza, 22, 7);
-//
-//    std::cout<<std::endl<<"A*: Sciezka znaleziona przez algorytm"<<std::endl;
-//    for(it=temp.end()-1;it>=temp.begin();--it)
-//    {
-//        std::cout<<_plansza.alias[*it]<<" ";;
-//    }
-
+    // 25 wierzchołków, król H(7), skoczek W(22), wieża A(0)
+    dfs::doDFS({25, 7, 22, 0});
+    AStar::doAStar({25, 7, 22, 0});
 
     return 0;
 }

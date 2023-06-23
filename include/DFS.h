@@ -5,7 +5,7 @@
 
 struct dfs
 {
-    static void doDFS(const Board &board, int start, int cel);
+    static void doDFS(const Board &board);
     static void foundPath(const Board &board,std::vector<int>& visited);
     static void pathOrder(const Board &board,std::vector<int>& visited);
 };

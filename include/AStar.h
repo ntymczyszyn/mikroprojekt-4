@@ -7,11 +7,9 @@
 struct AStar
 {
     static int heuristic(int a, int b);
-    static bool isInSet(std::vector <int> &zbior, int a);
-    static  void removeFromSet(std::vector <int> &zbior, int a);
-
-    static std::vector <int> doAStar (const Board &plansz, int start, int cel);
-    static std::vector <int> odtworz_sciezke(int *cameFrom, int current);
+    static void doAStar (const Board &board);
+    static void pathOrder(const Board &board,std::vector<int>& visited, std::vector<int>& fScore, std::vector<int>& hScore, std::vector<int>& gScore);
+    static void foundPath(const Board &board, const std::vector<int>& cameFrom, int current);
 };
 
 #endif // ASTAR_H

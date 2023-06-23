@@ -1,18 +1,19 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include "Graph.h"
-#include <iostream>
 
 class Board
 {
 public:
-    Board();
+    Board(int _size, int _king, int _knight, int _tower);
     int getKing() const;
+    int getKnight() const;
     char alias[25];
-    Graph graph; //tworzymy graf oparty na listach stanowiacy dla nas graf wszystkich sytuacji na planszy
+    Graph graph;
 private:
     int king;
     int tower;
+    int knight;
     bool validMove(int a, int b);
 };
 

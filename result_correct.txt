@@ -14,3 +14,16 @@ H 7, f=3, h=0, g=3
 
 A*: Sciezka znaleziona przez algorytm
 W N Q H
+
+=======================================================
+A* - Visited nodes
+W 1, f = 3, h = 3, g = 0
+N 2, f = 3, h = 2, g = 1
+G 3, f = 3, h = 1, g = 2
+L 4, f = 3, h = 2, g = 1
+I 5, f = 3, h = 1, g = 2
+S 6, f = 5, h = 3, g = 2
+H 7, f = 3, h = 0, g = 3
+
+A* - sciezka znaleziona przez algorytm
+W L S H
